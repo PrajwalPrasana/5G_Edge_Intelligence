@@ -1,0 +1,9 @@
+# Ignore the virtual environment
+5g_env/
+
+# Ignore large data files
+*.csv
+
+#ignore pycache and training model weights
+__pycache__/
+*.pth
