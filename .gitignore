@@ -4,6 +4,6 @@
 # Ignore large data files
 *.csv
 
-#ignore pycache and training model weights
+#ignore pycache and training model weights from main branch
 __pycache__/
 *.pth
