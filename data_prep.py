@@ -22,6 +22,10 @@ print("[2/4] Cleaning data (removing useless tracking columns)...")
 cols_to_drop = ['Unnamed: 0', 'Seq']
 df_clean = df.drop(columns=[col for col in cols_to_drop if col in df.columns])
 
+# We only want it to learn from raw network traffic features.
+columns_to_drop = ['Label', 'Attack Tool', 'Attack Type', 'Cause']
+df_clean = df_clean.drop(columns=columns_to_drop, errors='ignore')
+
 # FIX MISSING & TEXT DATA
 print("[3/4] Fixing missing values and converting text to numbers...")
 
@@ -53,6 +57,5 @@ df_final = pd.DataFrame(scaled_values, columns=df_clean.columns)
 print("\n--- Preprocessing Complete! ---")
 print("Here is a peek at the first 3 rows of your AI-ready data:\n")
 
-# In a standard script, we use print() to output to the terminal
 # We only print the first 5 columns so it doesn't clutter your screen
 print(df_final.iloc[:3, :5])
