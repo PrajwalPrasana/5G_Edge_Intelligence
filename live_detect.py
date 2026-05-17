@@ -57,16 +57,36 @@ for i, packet in enumerate(live_stream_data):
         reconstructed_np = reconstructed_packet.detach().numpy()[0]
         feature_errors = np.abs(packet_np - reconstructed_np)
         
-        # Plot the Graph
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(12, 7)) # Made it slightly bigger to fit text
         top_indices = np.argsort(feature_errors)[-10:] 
-        plt.barh([feature_names[idx] for idx in top_indices], feature_errors[top_indices], color='crimson')
-        plt.title(f"XAI Anomaly Root Cause Analysis (Flow {8800 + i})", fontsize=14, fontweight='bold')
-        plt.xlabel("Reconstruction Error (Deviation from Normal 5G Baseline)", fontsize=12)
-        plt.ylabel("Network Feature", fontsize=12)
-        plt.grid(axis='x', linestyle='--', alpha=0.7)
         
-        # SHOW GRAPH (This actually pauses the Python script!)
+        # 1. THE AI TRANSLATION DICTIONARY
+        # This translates the math into M.Tech thesis English
+        feature_dictionary = {
+            'Proto': 'Network Protocol (Attacker is likely spoofing TCP/UDP headers)',
+            'sMeanPktSz': 'Source Mean Packet Size (Massive spike indicates a Volumetric DDoS Flood)',
+            'sDSb': 'Differentiated Services Byte (Attacker is manipulating router QoS flags)',
+            'sTtl': 'Time-to-Live (Unnatural packet lifespan, indicating spoofed origin)',
+            'sHops': 'Network Hops (Packet is bouncing through unnatural routing paths)',
+            'SrcTCPBase': 'Source TCP Base (TCP Handshake manipulation/SYN Flood)'
+        }
+        
+        top_feature_name = feature_names[top_indices[-1]] # The #1 biggest error
+        english_explanation = feature_dictionary.get(top_feature_name, 'Anomalous deviation in standard routing metrics.')
+
+        plt.barh([feature_names[idx] for idx in top_indices], feature_errors[top_indices], color='crimson')
+        plt.title(f"XAI Root Cause Analysis (Flow {8800 + i})", fontsize=16, fontweight='bold')
+        plt.xlabel("Reconstruction Error (Deviation from Normal Baseline)", fontsize=12)
+        
+        # 2. ADD THE PLAIN ENGLISH REPORT TO THE GRAPH
+        report_text = f"AI DIAGNOSIS REPORT \nPrimary Threat Vector: {top_feature_name}\nExplanation: {english_explanation}"
+        
+        # This prints a text box directly onto the bottom of your Matplotlib window
+        plt.figtext(0.15, 0.02, report_text, fontsize=12, color='white', 
+                    bbox=dict(facecolor='darkred', alpha=0.8, pad=10))
+
+        plt.subplots_adjust(bottom=0.2) # Make room at the bottom for the text box
+        plt.grid(axis='x', linestyle='--', alpha=0.7)
         plt.show()
         
         # When you close the graph window, the script resumes here:
