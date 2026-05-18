@@ -1,4 +1,5 @@
 import pandas as pd
+import joblib
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 
 print("--- 5G Data Preprocessing Started ---\n")
@@ -59,3 +60,7 @@ print("Here is a peek at the first 3 rows of your AI-ready data:\n")
 
 # We only print the first 5 columns so it doesn't clutter your screen
 print(df_final.iloc[:3, :5])
+
+# Save the scaler so the live script can use it
+joblib.dump(scaler, '5g_scaler.save')
+print("Scaler saved successfully!")
