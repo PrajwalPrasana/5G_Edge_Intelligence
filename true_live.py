@@ -8,7 +8,7 @@ import data_prep
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-print("\n🚨 INITIATING TRUE LIVE EDGE AI INFERENCE 🚨\n")
+print("\n INITIATING TRUE LIVE EDGE AI INFERENCE \n")
 
 # 1. Load Brain, Scaler, and Feature Map
 print("[System] Loading Autoencoder and MinMaxScaler...")
@@ -82,7 +82,7 @@ def process_live_packet(packet):
                 top_error_index = np.argmax(feature_errors)
                 top_culprit = feature_names[top_error_index]
                 
-                print(f"🚨 [CRITICAL] ANOMALY DETECTED! Error: {loss:.5f} 🚨")
+                print(f" [CRITICAL] ANOMALY DETECTED! Error: {loss:.5f} ")
                 print(f"   => XAI DIAGNOSIS: Root cause feature is [{top_culprit}]\n")
                 
     except Exception as e:
